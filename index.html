@@ -38,7 +38,7 @@
             <div class="col-md-4">
                 <div class="withdraw status">
                     <h5>Withdraw</h5>
-                    <h2>$00</h2>
+                    <h2>$ <span id="current-withdraw">00</span></h2>
                 </div>
             </div>
             <div class="col-md-4">
@@ -61,9 +61,10 @@
             <div class="col-md-6">
                 <div class="submit-area">
                     <h4>Withdraw</h4>
-                    <input type="text" class="form-control" placeholder="$ Amount you want to withdraw">
+                    <input id="withdraw-amount" type="text" class="form-control"
+                        placeholder="$ Amount you want to withdraw">
                     <br>
-                    <button class="btn-success">Withdraw</button>
+                    <button id="add-withdraw" class="btn-success">Withdraw</button>
                 </div>
             </div>
         </div>
@@ -82,23 +83,44 @@
     // deposit button envent handler
     const depositBtn = document.getElementById('add-deposit');
     depositBtn.addEventListener('click', function () {
-        depositAmount = document.getElementById('deposit-amount').value;
-        const depositNumber = parseFloat(depositAmount);
+        const depositNumber = getInputNumber('deposit-amount');
 
         document.getElementById('deposit-amount').value = "";
 
-        exchanger('current-balance', depositNumber);
         exchanger('current-deposit', depositNumber);
+        exchanger('current-balance', depositNumber);
 
-        function exchanger(id, depositNumber) {
-            const current = document.getElementById(id).innerText;
-            const currentNumber = parseFloat(current);
-            const total = currentNumber + depositNumber;
-            document.getElementById(id).innerText = total;
-        }
+
 
 
     })
+
+    // withdraw button envent handler
+    const withdrawBtn = document.getElementById('add-withdraw');
+    withdrawBtn.addEventListener('click', function () {
+        const withdrawNumber = getInputNumber('withdraw-amount');
+
+
+        exchanger('current-withdraw', withdrawNumber);
+        exchanger('current-balance', -1* withdrawNumber);
+
+        document.getElementById('withdraw-amount').value = "";
+
+
+
+    })
+
+    function getInputNumber(id) {
+        const amount = document.getElementById(id).value;
+        const number = parseFloat(amount);
+        return number;
+    }
+    function exchanger(id, Number) {
+        const current = document.getElementById(id).innerText;
+        const currentNumber = parseFloat(current);
+        const total = currentNumber + Number;
+        document.getElementById(id).innerText = total;
+    }
 
 
 
